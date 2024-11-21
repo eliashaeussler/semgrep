@@ -224,12 +224,13 @@ let output f (matches : Out.cli_match list) : JSON.yojson =
       ]
   in
   let start_time = Metrics_.g.payload.started_at
-  and end_time = Timedesc.Timestamp.now () in
+  and end_time = Timedesc.Timestamp.now ()
+  and date_format = "{year}-{mon:cX}-{day:cX}T{hour:cX}:{min:cX}:{sec:cX}" in
   let scan =
     `Assoc
       [
-        ("start_time", `String (Timedesc.Timestamp.to_rfc3339 start_time));
-        ("end_time", `String (Timedesc.Timestamp.to_rfc3339 end_time));
+        ("start_time", `String (Timedesc.Timestamp.to_string ~format:date_format start_time));
+        ("end_time", `String (Timedesc.Timestamp.to_string ~format:date_format end_time));
         ("analyzer", tool);
         ("scanner", tool);
         ("version", `String Version.version);
